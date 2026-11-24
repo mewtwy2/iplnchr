@@ -1,242 +1,415 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-export default function App() {
+
+const socials = {
+  Instagram: {
+    handle: "@mewtwy2_",
+    url: "https://www.instagram.com/mewtwy2_/",
+    icon: "◎",
+    color: "#E9B3CA",
+    bio: "Seu cantinho na internet ♡",
+    type: "Instagram"
+  },
+  TikTok: {
+    handle: "@mewtwy2",
+    url: "https://www.tiktok.com/@mewtwy2",
+    icon: "♪",
+    color: "#E8B6CA",
+    bio: "Um pouquinho do meu mundo ♡",
+    type: "TikTok"
+  },
+  YouTube: {
+    handle: "@mewtwy2",
+    url: "https://www.youtube.com/@mewtwy2",
+    icon: "▶",
+    color: "#E7AFC2",
+    bio: "Vídeos e momentos especiais ♡",
+    type: "YouTube"
+  },
+  X: {
+    handle: "@mewtwy2_",
+    url: "https://x.com/mewtwy2_",
+    icon: "𝕏",
+    color: "#DDB8C9",
+    bio: "Me encontre por aqui ♡",
+    type: "X"
+  }
+};
+
+const apps = [
+  { name: "Mensagens", icon: "💬", color: "#F7D9E7" },
+  { name: "Fotos", icon: "🌸", color: "#F8E6EF" },
+  { name: "Spotify", icon: "🎵", color: "#E9E8DD" },
+  { name: "Instagram", icon: "◎", color: "#F5DCE9" },
+  { name: "TikTok", icon: "♪", color: "#F1DCE8" },
+  { name: "YouTube", icon: "▶", color: "#F7DDE5" },
+  { name: "X", icon: "𝕏", color: "#EDE4EA" }
+];
+
+function App() {
   const [time, setTime] = useState(new Date());
-  const [openApp, setOpenApp] = useState("");
-  const [note, setNote] = useState("");
-  const [wallpaper, setWallpaper] = useState("from-pink-200 via-pink-100 to-rose-200");
-  const [darkMode, setDarkMode] = useState(false);
+  const [active, setActive] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const apps = [
-    { name: "Fotos", emoji: "🌷", color: "bg-pink-300" },
-    { name: "Notas", emoji: "📝", color: "bg-yellow-200" },
-    { name: "Música", emoji: "🎧", color: "bg-purple-200" },
-    { name: "Calendário", emoji: "📅", color: "bg-red-200" },
-    { name: "Mensagens", emoji: "💌", color: "bg-pink-200" },
-    { name: "Safari", emoji: "🧭", color: "bg-blue-200" },
-    { name: "Calculadora", emoji: "🧮", color: "bg-gray-200" },
-    { name: "Ajustes", emoji: "⚙️", color: "bg-gray-300" },
-  ];
-
-  const clock = time.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  const date = time.toLocaleDateString("pt-BR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
-
-  const renderApp = () => {
-    switch (openApp) {
-      case "Fotos":
-        return (
-          <div className="grid grid-cols-2 gap-3">
-            {["🌸", "🎀", "🧸", "🩷", "🌷", "✨"].map((item, i) => (
-              <div key={i} className="aspect-square rounded-2xl bg-pink-100 flex items-center justify-center text-5xl">
-                {item}
-              </div>
-            ))}
-            <p className="col-span-2 text-center text-pink-400 text-sm">
-              Seu cantinho de memórias ♡
-            </p>
-          </div>
-        );
-
-      case "Notas":
-        return (
-          <div>
-            <p className="text-pink-500 mb-3">Minhas anotações ♡</p>
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Escreva suas ideias aqui..."
-              className="w-full h-64 rounded-2xl bg-pink-50 p-4 outline-none resize-none text-gray-700"
-            />
-          </div>
-        );
-
-      case "Música":
-        return (
-          <div className="text-center py-10">
-            <div className="text-8xl mb-6">🎧</div>
-            <h2 className="text-xl font-bold text-pink-600">My Playlist</h2>
-            <p className="text-gray-500 mt-2">Sua trilha sonora favorita ♡</p>
-            <div className="mt-8 p-4 rounded-2xl bg-pink-100">
-              🎵 Adicione suas músicas favoritas!
-            </div>
-          </div>
-        );
-
-      case "Calendário":
-        return (
-          <div className="text-center py-8">
-            <div className="text-6xl mb-4">📅</div>
-            <h2 className="text-2xl font-bold text-pink-600">
-              {time.getDate()}
-            </h2>
-            <p className="capitalize text-gray-500">{date}</p>
-            <p className="mt-8 text-pink-400">Organize seus dias ♡</p>
-          </div>
-        );
-
-      case "Mensagens":
-        return (
-          <div className="space-y-4">
-            <div className="bg-pink-100 p-4 rounded-2xl rounded-bl-none">
-              Oii! Bem-vinda ao seu celular virtual! 💗
-            </div>
-            <div className="bg-purple-100 p-4 rounded-2xl rounded-br-none ml-8">
-              Que felicidade estar aqui! 🎀
-            </div>
-            <p className="text-center text-gray-400 text-sm">
-              Suas conversas começam aqui ♡
-            </p>
-          </div>
-        );
-
-      case "Safari":
-        return (
-          <div className="text-center py-8">
-            <div className="text-7xl mb-5">🧭</div>
-            <h2 className="text-xl font-bold text-pink-600">Safari</h2>
-            <p className="text-gray-500 mt-3">
-              Seu navegador virtual.
-            </p>
-            <input
-              placeholder="Pesquisar..."
-              className="w-full mt-6 p-4 rounded-full bg-pink-50 outline-none"
-            />
-          </div>
-        );
-
-      case "Calculadora":
-        return (
-          <div className="text-center py-6">
-            <div className="text-7xl mb-5">🧮</div>
-            <p className="text-gray-500">
-              Sua calculadora virtual ♡
-            </p>
-            <a
-              href="https://www.google.com/search?q=calculadora"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block mt-6 bg-pink-400 text-white rounded-full px-6 py-3"
-            >
-              Abrir calculadora
-            </a>
-          </div>
-        );
-
-      case "Ajustes":
-        return (
-          <div className="space-y-4">
-            <div className="p-4 bg-pink-100 rounded-2xl">
-              <p className="font-bold text-pink-600">Aparência</p>
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="mt-3 w-full text-left"
-              >
-                {darkMode ? "🌙 Modo escuro: ligado" : "☀️ Modo claro: ligado"}
-              </button>
-            </div>
-            <div className="p-4 bg-pink-100 rounded-2xl">
-              <p className="font-bold text-pink-600">Papel de parede</p>
-              <div className="flex gap-3 mt-3">
-                <button onClick={() => setWallpaper("from-pink-200 via-pink-100 to-rose-200")} className="text-3xl">🩷</button>
-                <button onClick={() => setWallpaper("from-purple-200 via-pink-100 to-purple-100")} className="text-3xl">💜</button>
-                <button onClick={() => setWallpaper("from-rose-100 via-white to-pink-200")} className="text-3xl">🤍</button>
-              </div>
-            </div>
-            <p className="text-center text-gray-400 text-sm">My Pink Phone · 1.0</p>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
+  const profile = socials[active as keyof typeof socials];
 
   return (
-    <div className="min-h-screen bg-pink-100 flex items-center justify-center p-3">
-      <div className="w-full max-w-[390px] h-[780px] max-h-[95vh] rounded-[48px] bg-black p-[9px] shadow-2xl">
-        <div className={`relative w-full h-full rounded-[40px] overflow-hidden bg-gradient-to-br ${wallpaper} ${darkMode ? "brightness-75" : ""}`}>
-          
-          <div className="flex justify-between items-center px-7 pt-5 text-gray-800 text-sm font-bold">
-            <span>{clock}</span>
-            <span>● ᯤ ▰</span>
-          </div>
+    <>
+      <style>{`
+        * { box-sizing: border-box; }
+        body {
+          margin: 0;
+          background: #f9edf2;
+          color: #765466;
+          font-family: Inter, Arial, sans-serif;
+        }
+        button { font: inherit; cursor: pointer; }
+        .phone {
+          width: 100%;
+          max-width: 430px;
+          min-height: 100vh;
+          margin: auto;
+          background: linear-gradient(160deg,#fffafd,#fcecf3);
+          position: relative;
+          overflow: hidden;
+        }
+        .status {
+          height: 48px;
+          padding: 16px 26px 5px;
+          display: flex;
+          justify-content: space-between;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        .home { padding: 22px 25px 110px; }
+        .brand {
+          text-align: center;
+          margin: 12px 0 32px;
+        }
+        .brand h1 {
+          font-size: 30px;
+          letter-spacing: -1.5px;
+          margin: 0;
+          color: #bd7898;
+          font-weight: 700;
+        }
+        .brand p {
+          font-size: 13px;
+          margin-top: 10px;
+          color: #a87c91;
+        }
+        .app-grid {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 28px 12px;
+        }
+        .app-button {
+          border: 0;
+          background: transparent;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          color: #805d70;
+          font-size: 11px;
+        }
+        .app-icon {
+          width: 65px;
+          height: 65px;
+          border-radius: 21px;
+          display: grid;
+          place-items: center;
+          font-size: 29px;
+          box-shadow: 0 5px 13px #c99bb522;
+          transition: transform .2s;
+        }
+        .app-button:active .app-icon { transform: scale(.91); }
+        .dock {
+          position: absolute;
+          bottom: 24px;
+          left: 18px;
+          right: 18px;
+          background: #ffffffa8;
+          backdrop-filter: blur(18px);
+          border: 1px solid white;
+          border-radius: 27px;
+          display: flex;
+          justify-content: space-around;
+          padding: 15px 5px;
+        }
+        .dock button {
+          background: transparent;
+          border: 0;
+          font-size: 24px;
+        }
+        .screen { padding: 18px 22px 45px; }
+        .back {
+          border: 0;
+          background: #f8e3ed;
+          color: #ad6f8d;
+          padding: 9px 15px;
+          border-radius: 15px;
+          margin-bottom: 20px;
+        }
+        .screen h2 {
+          color: #b87594;
+          font-size: 24px;
+          margin: 5px 0 22px;
+        }
+        .message-card {
+          background: white;
+          padding: 17px;
+          border-radius: 22px 22px 22px 5px;
+          box-shadow: 0 5px 20px #cba5b322;
+          line-height: 1.7;
+          font-size: 14px;
+        }
+        .message-name {
+          font-size: 12px;
+          color: #c184a1;
+          margin-bottom: 10px;
+          font-weight: bold;
+        }
+        .gallery {
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 12px;
+        }
+        .photo {
+          aspect-ratio: 1;
+          border-radius: 18px;
+          border: 1px solid white;
+          background: linear-gradient(140deg,#f8dce9,#fff5fa);
+          display: grid;
+          place-items: center;
+          font-size: 28px;
+          color: #c58aa6;
+        }
+        .profile-card {
+          background: white;
+          padding: 20px;
+          border-radius: 25px;
+          box-shadow: 0 5px 20px #cba5b322;
+        }
+        .profile-top {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        .avatar {
+          width: 68px;
+          height: 68px;
+          border-radius: 50%;
+          background: linear-gradient(135deg,#f3ccdf,#fff1f7);
+          display: grid;
+          place-items: center;
+          font-size: 27px;
+        }
+        .handle { font-size: 14px; font-weight: bold; }
+        .bio { font-size: 13px; margin-top: 6px; color: #a17a8d; }
+        .preview-grid {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 5px;
+          margin-top: 22px;
+        }
+        .preview {
+          aspect-ratio: 1;
+          background: linear-gradient(145deg,#f6dce9,#fff6fa);
+          display: grid;
+          place-items: center;
+          font-size: 19px;
+        }
+        .visit {
+          display: block;
+          text-decoration: none;
+          text-align: center;
+          background: #d99ab7;
+          color: white;
+          padding: 14px;
+          border-radius: 16px;
+          margin-top: 22px;
+          font-size: 13px;
+          font-weight: bold;
+        }
+        .spotify-card {
+          background: #fff;
+          padding: 22px;
+          border-radius: 24px;
+          text-align: center;
+        }
+        .spotify-cover {
+          height: 210px;
+          border-radius: 18px;
+          background: linear-gradient(145deg,#f2d7e4,#e8dce8);
+          display: grid;
+          place-items: center;
+          font-size: 65px;
+        }
+        .muted {
+          color: #ad8b9c;
+          font-size: 12px;
+          line-height: 1.7;
+        }
+        .photo-modal {
+          position: fixed;
+          inset: 0;
+          z-index: 10;
+          background: #7b5367dd;
+          display: grid;
+          place-items: center;
+          color: white;
+          font-size: 18px;
+        }
+      `}</style>
 
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full" />
+      <div className="phone">
+        <div className="status">
+          <span>{time.toLocaleTimeString("pt-BR", {
+            hour: "2-digit", minute: "2-digit"
+          })}</span>
+          <span>●●●　▰</span>
+        </div>
 
-          {openApp === "" ? (
-            <div className="px-6 pt-12">
-              <div className="text-center mb-10">
-                <p className="text-gray-600 capitalize text-sm">{date}</p>
-                <h1 className="text-6xl font-light text-gray-800 mt-2">{clock}</h1>
-                <p className="text-pink-600 mt-3 font-medium">
-                  Bem-vinda ao seu mundo ♡
-                </p>
-              </div>
+        {!active ? (
+          <>
+            <main className="home">
+              <header className="brand">
+                <h1>Mandi's Space</h1>
+                <p>Oioi meus amores! Aqui é a Mandi ♡</p>
+              </header>
 
-              <div className="grid grid-cols-4 gap-x-3 gap-y-8">
+              <div className="app-grid">
                 {apps.map((app) => (
                   <button
+                    className="app-button"
                     key={app.name}
-                    onClick={() => setOpenApp(app.name)}
-                    className="flex flex-col items-center gap-2 active:scale-90 transition"
+                    onClick={() => setActive(app.name)}
                   >
-                    <div className={`${app.color} w-14 h-14 rounded-[19px] flex items-center justify-center text-3xl shadow-md`}>
-                      {app.emoji}
-                    </div>
-                    <span className="text-[10px] text-gray-700 font-medium">
-                      {app.name}
-                    </span>
+                    <span className="app-icon" style={{
+                      background: app.color
+                    }}>{app.icon}</span>
+                    {app.name}
                   </button>
                 ))}
               </div>
+            </main>
 
-              <div className="absolute bottom-16 left-5 right-5 rounded-[28px] bg-white/50 backdrop-blur-md p-4 flex justify-around text-3xl shadow-lg">
-                <button onClick={() => setOpenApp("Mensagens")}>💬</button>
-                <button onClick={() => setOpenApp("Safari")}>🧭</button>
-                <button onClick={() => setOpenApp("Fotos")}>🌸</button>
-                <button onClick={() => setOpenApp("Música")}>🎵</button>
-              </div>
-            </div>
-          ) : (
-            <div className="absolute inset-0 top-12 bg-white rounded-t-[32px] p-5">
-              <div className="flex items-center gap-3 mb-8">
-                <button
-                  onClick={() => setOpenApp("")}
-                  className="text-pink-500 text-2xl"
-                >
-                  ‹
-                </button>
-                <h2 className="text-xl font-bold text-pink-600">{openApp}</h2>
-              </div>
-              {renderApp()}
-            </div>
-          )}
+            <nav className="dock">
+              {["💬","🌸","🎵","◎"].map((icon, index) => (
+                <button key={index} onClick={() =>
+                  setActive(["Mensagens","Fotos","Spotify","Instagram"][index])
+                }>{icon}</button>
+              ))}
+            </nav>
+          </>
+        ) : (
+          <main className="screen">
+            <button className="back" onClick={() => setActive("")}>
+              ‹ Voltar
+            </button>
 
-          <button
-            onClick={() => setOpenApp("")}
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1.5 rounded-full bg-gray-800"
-          />
-        </div>
+            {active === "Mensagens" && (
+              <>
+                <h2>Mensagens ♡</h2>
+                <div className="message-card">
+                  <div className="message-name">Mandi</div>
+                  Oioi meus amores! Aqui é a Mandi ♡
+                  <br/><br/>
+                  Seja muito bem-vindo(a) ao meu cantinho!
+                  Criei esse pequeno espaço para compartilhar
+                  um pouquinho sobre mim e as coisas que amo.
+                  <br/><br/>
+                  Aqui você pode conhecer minhas redes sociais,
+                  ver algumas das minhas fotos e ouvir minhas
+                  músicas favoritas.
+                  <br/><br/>
+                  Espero que você goste de conhecer meu mundinho.
+                  Fique à vontade! ♡
+                </div>
+              </>
+            )}
+
+            {active === "Fotos" && (
+              <>
+                <h2>Minha galeria 🌸</h2>
+                <p className="muted">
+                  Alguns momentos especiais. Em breve, suas fotos aqui!
+                </p>
+                <div className="gallery">
+                  {Array.from({length: 6}, (_, i) => (
+                    <button className="photo" key={i}
+                      onClick={() => setSelectedPhoto(i)}
+                    >♡</button>
+                  ))}
+                </div>
+                {selectedPhoto !== null && (
+                  <div className="photo-modal"
+                    onClick={() => setSelectedPhoto(null)}>
+                    <div>Espaço para sua foto ♡<br/><br/>Toque para fechar</div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {active === "Spotify" && (
+              <>
+                <h2>My Music ♡</h2>
+                <div className="spotify-card">
+                  <div className="spotify-cover">🎵</div>
+                  <h3>My favorite songs</h3>
+                  <p className="muted">
+                    Minha trilha sonora, feita com carinho.
+                  </p>
+                  <a className="visit" href="https://open.spotify.com/"
+                    target="_blank" rel="noreferrer">
+                    Abrir Spotify
+                  </a>
+                  <p className="muted">
+                    Depois vamos colocar aqui seu player e sua playlist.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {profile && (
+              <>
+                <h2>{active} ♡</h2>
+                <div className="profile-card">
+                  <div className="profile-top">
+                    <div className="avatar">♡</div>
+                    <div>
+                      <div className="handle">{profile.handle}</div>
+                      <div className="bio">{profile.bio}</div>
+                    </div>
+                  </div>
+                  <div className="preview-grid">
+                    {Array.from({length: 9}, (_, i) => (
+                      <div className="preview" key={i}>♡</div>
+                    ))}
+                  </div>
+                  <a className="visit" href={profile.url}
+                    target="_blank" rel="noreferrer">
+                    Visitar perfil oficial ↗
+                  </a>
+                </div>
+                <p className="muted">
+                  Prévia ilustrativa do seu perfil. Toque para visitar
+                  sua rede social verdadeira.
+                </p>
+              </>
+            )}
+          </main>
+        )}
       </div>
-    </div>
+    </>
   );
 }
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+
+createRoot(document.getElementById("root")!).render(<App />);
