@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-
+import { createRoot } from "react-dom/client";
 export default function App() {
   const [time, setTime] = useState(new Date());
   const [openApp, setOpenApp] = useState("");
@@ -235,3 +235,8 @@ export default function App() {
     </div>
   );
 }
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
